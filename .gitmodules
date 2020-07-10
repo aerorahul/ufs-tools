@@ -1,0 +1,8 @@
+[submodule "buildHarness/CICE-interface"]
+	path = buildHarness/CICE-interface
+	url = https://github.com/aerorahul/CICE-interface
+	branch = feature/s2s-cmake-target
+[submodule "buildHarness/MOM6-interface"]
+	path = buildHarness/MOM6-interface
+	url = https://github.com/aerorahul/MOM6-interface
+	branch = feature/s2s-cmake-target
