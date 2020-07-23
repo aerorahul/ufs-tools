@@ -48,7 +48,9 @@ test1x1
 ├── input.nml
 └── read_fv3lam.x
 ```
+
 and
+
 ```
 $> tree -L 2 test2x2
 test2x2
@@ -81,5 +83,12 @@ test2x2
 └── read_fv3lam.x
 ```
 
-To test `test1x1`: `cd test1x1; mpirun -np 1 ./read_fv3lam.x`
-To test `test2x2`: `cd test2x2; mpirun -np 4 ./read_fv3lam.x`
+To test `test1x1` case:
+```
+cd test1x1; mpirun -np 1 ./read_fv3lam.x
+```
+
+To test `test2x2` case:
+```
+cd test2x2; mpirun -np 4 ./read_fv3lam.x
+```
