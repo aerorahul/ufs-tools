@@ -22,15 +22,15 @@ make install
 ```
 git clone https://github.com/aerorahul/ufs-tools -b regionalIO fv3lam_src
 mkdir build && cd build
-CC=mpiicc FC=mpiifort cmake -DCMAKE_PREFIX_PATH=$FMS_INSTALL ..
+CC=mpiicc FC=mpiifort cmake -DCMAKE_PREFIX_PATH=$FMS_INSTALL ../fv3lam_src/fv3lam
 make -j4
 ls -l ./read_fv3lam.x
 ```
 
 ### Testing fv3lam
 There is an `input.nml` in each of `test1x1` and `test2x2` directories.
-Each of those directories are identical and only differ in the `io_layout`.
-Copy/link the files in the `INPUT` directory and the exectuable generated above in each of the test directories.  The contents will look like the following:
+`input.nml` in each of those directories is identical and only differs in the `io_layout`.
+Copy/link the files in the `INPUT` directory and the exectuable generated above `(read_fv3lam.x)` in each of the test directories.  The contents will look like the following:
 
 ```
 $> tree -L 2 test1x1
