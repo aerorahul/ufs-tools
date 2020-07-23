@@ -1,0 +1,29 @@
+&fv_grid_nml
+  grid_file = 'INPUT/grid_spec.nc'
+/
+
+&fv_core_nml
+  npx = 211
+  npy = 193
+  npz = 64
+  ntiles = 1
+  nhalo = 3
+  layout = 6,4
+  io_layout = 1,1
+/
+
+&fv_rst_nml
+  restart_files = 'fv_core.res.tile1.nc', 'fv_srf_wnd.res.tile1.nc', 'fv_tracer.res.tile1.nc'
+/
+
+&fms_io_nml
+  checksum_required = .false.
+  max_files_r = 100,
+  max_files_w = 100,
+/
+
+&fms_nml
+  clock_grain = 'ROUTINE',
+  domains_stack_size = 3000000,
+  print_memory_usage = .false.
+/
