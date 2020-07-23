@@ -41,10 +41,8 @@ test1x1
 │   ├── coupler.res
 │   ├── fv_core.res.nc
 │   ├── fv_core.res.tile1.nc
-│   ├── fv_core.res.tile1_new.nc
 │   ├── fv_srf_wnd.res.tile1.nc
 │   ├── fv_tracer.res.tile1.nc
-│   ├── fv_tracer.res.tile1_new.nc
 │   ├── phy_data.nc
 │   └── sfc_data.nc
 ├── input.nml
@@ -63,7 +61,6 @@ test2x2
 │   ├── fv_core.res.tile1.nc.0001
 │   ├── fv_core.res.tile1.nc.0002
 │   ├── fv_core.res.tile1.nc.0003
-│   ├── fv_core.res.tile1_new.nc
 │   ├── fv_srf_wnd.res.tile1.nc.0000
 │   ├── fv_srf_wnd.res.tile1.nc.0001
 │   ├── fv_srf_wnd.res.tile1.nc.0002
@@ -72,7 +69,6 @@ test2x2
 │   ├── fv_tracer.res.tile1.nc.0001
 │   ├── fv_tracer.res.tile1.nc.0002
 │   ├── fv_tracer.res.tile1.nc.0003
-│   ├── fv_tracer.res.tile1_new.nc
 │   ├── phy_data.nc.0000
 │   ├── phy_data.nc.0001
 │   ├── phy_data.nc.0002
