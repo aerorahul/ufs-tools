@@ -8,9 +8,9 @@ Reading FV3-LAM restart files in a stand-alone manner.
 - FMS
 
 ### Installing FMS
-This uses a cmake build of FMS.  The branch below is under review at GFDL and will be merged in the master.
+This uses a cmake build of FMS.
 ```
-git clone https://github.com/aerorahul/fms -b bugfix/cmake fms_src
+git clone https://github.com/noaa-gfdl/fms fms_src
 FMS_INSTALL=$PWD/fms_install
 mkdir fms_build && cd fms_build
 CC=mpiicc FC=mpiifort cmake -DCMAKE_INSTALL_PREFIX=$FMS_INSTALL -DGFS_PHYS=ON ../fms_src
