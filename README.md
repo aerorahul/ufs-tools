@@ -40,6 +40,3 @@ $> salloc --partition=debug --qos=debug --account=da-cpu --nodes=7 --ntasks-per-
 
 6. Run the tests, one by one.
 $> ./drive_run_ufs.sh
-
-For reference, you can see my runs on Orion at:
-/work/noaa/da/rmahajan/work/UFS/standalone
