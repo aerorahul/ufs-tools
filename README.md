@@ -5,6 +5,7 @@ Steps:
 1. Checkout the UFS repo, cd into it and load the modules
 $> git clone https://github.com/ufs-community/ufs-weather-model
 $> cd ufs-weather-model
+
 $> git submodule update --init --recursive
 $> module use $PWD/modulefiles/orion.intel
 $> module load fv3
