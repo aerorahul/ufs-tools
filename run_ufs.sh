@@ -4,13 +4,12 @@
 
 set -eux
 
+MACHINE_ID=${MACHINE_ID:-?}
 UFSsrc=${UFSsrc:-?}
-TEST_NAME=${TEST_NAME:-fv3_ccpp_control}
+TEST_NAME=${TEST_NAME:-fv3_control}
 APRUN=${APRUN:-mpirun}
 RUNDIR=${RUNDIR:-/tmp/$TEST_NAME}
 UFSexe=${UFSexe:-ufs_model}
-
-export TEST_NAME
 
 # Templates and sources from $UFSsrc
 source $UFSsrc/tests/default_vars.sh
@@ -54,15 +53,22 @@ if [[ $DATM = 'true' ]]; then
   cp $UFSsrc/tests/parm/datm_data_table.IN datm_data_table
 fi
 
-# UFS executable
-cp $UFSexe ./ufs_model
+set +x
+module use $UFSsrc/modulefiles/$MACHINE_ID
+module load fv3
+module list
+set -x
 
 ulimit -s unlimited
 export OMP_STACKSIZE=512M
 export KMP_AFFINITY=scatter
 export OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}
 
+# Copy over the UFS executable
+echo "Copying UFS executable from $UFSexe"
+[[ -f $UFSexe ]] && cp $UFSexe ./ufs_model || false
+
 $APRUN ./ufs_model 2>&1 | tee out
 rc=$?
 
-exit 0
+exit $rc
