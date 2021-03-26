@@ -30,8 +30,8 @@ APRUN="srun --label -n $NTASKS"
 
 RT_COMPILER=$(echo $MACHINE_ID | cut -d. -f2)
 RT_SUFFIX=""
-RTPWD=/work/noaa/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201220/${RT_COMPILER^^}
-INPUTDATA_ROOT=/work/noaa/nems/emc.nemspara/RT/NEMSfv3gfs/input-data-20201220
+RTPWD=/work/noaa/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210212/${RT_COMPILER^^}
+INPUTDATA_ROOT=/work/noaa/nems/emc.nemspara/RT/NEMSfv3gfs/input-data-20210212
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20201220
 
 export MACHINE_ID
