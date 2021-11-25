@@ -1,0 +1,26 @@
+EARTH_component_list: ATM WAV
+EARTH_attributes::
+  Verbosity = high
+  HierarchyProtocol = off
+::
+
+ATM_model:                      fv3
+ATM_petlist_bounds:             ${ATM_PET_MIN} ${ATM_PET_MAX}
+ATM_attributes::
+  Verbosity = 0
+  DumpFields = false
+::
+
+WAV_model:                      ww3
+WAV_petlist_bounds:             ${WAV_PET_MIN} ${WAV_PET_MAX}
+WAV_attributes::
+  Verbosity = high
+::
+
+runSeq::
+  @1800
+    ATM
+    ATM -> WAV :SrcTermProcessing=0:TermOrder=SrcSeq
+    WAV
+  @
+::
