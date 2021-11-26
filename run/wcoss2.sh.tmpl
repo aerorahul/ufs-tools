@@ -1,12 +1,11 @@
 #!/bin/bash
-
 #PBS -o out
 #PBS -e err
 #PBS -N gfs_forecast
 #PBS -A GFS-DEV
 #PBS -q dev
 #PBS -l place=vscatter,select=$NODES:ncpus=$NCPUS:mpiprocs=$NCPUS
-#PBS -l walltime=02:00:00
+#PBS -l walltime=03:00:00
 
 set -eux
 

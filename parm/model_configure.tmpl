@@ -1,14 +1,14 @@
 total_member:            1
 print_esmf:              .false.
 PE_MEMBER01:             ${NCORES}
-start_year:              2021
-start_month:             11
-start_day:               09
-start_hour:              12
+start_year:              ${GDATE:0:4}
+start_month:             ${GDATE:4:2}
+start_day:               ${GDATE:6:2}
+start_hour:              ${GDATE:8:2}
 start_minute:            0
 start_second:            0
 fhrot:                   3
-nhours_fcst:             30
+nhours_fcst:             390
 RUN_CONTINUE:            .false.
 ENS_SPS:                 .false.
 

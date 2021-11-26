@@ -5,6 +5,7 @@ set -eux
 # Required environment variables
 envars=()
 envars+=("MACHINE")
+envars+=("CDATE")
 envars+=("REPODIR")
 envars+=("DATADIR")
 envars+=("MAX_NCORES_PER_NODE")
@@ -20,6 +21,9 @@ envars+=("LAYOUT_Y")
 echeck ${envars[@]}
 
 ### D O  N O T  E D I T  B E L O W ###
+
+GDATE=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2} - 6 hours")
+BDATE=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2} - 3 hours")
 
 # Calculations based on User settings
 NCORES=$((NODES*NCPUS))
