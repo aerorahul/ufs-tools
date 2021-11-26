@@ -1,43 +1,46 @@
 #!/bin/bash
 
-#PBS -j oe
-#PBS -N fcst_210x12
-#PBS -A GFS-DEV
-#PBS -q dev
-#PBS -l place=vscatter,select=210:ncpus=12:mpiprocs=12
-#PBS -l walltime=01:00:00
-
 set -eux
 
 CDATE=2021110918
 CDUMP=gfs
-ROOTDIR="/lfs/h2/emc/eib/noscrub/Rahul.Mahajan/ufs-tools"
-MODELDIR="/lfs/h2/emc/eib/noscrub/Rahul.Mahajan/UFS/fv3gfs.fd"
 
-RUNDIR=${STMP:-"/lfs/h2/emc/stmp/$USER"}/opsfcst
+MACHINE="wcoss_dell_p3"
+#MACHINE="wcoss2"
 
-FIXDIR="/lfs/h2/emc/global/noscrub/Kate.Friedman/glopara/FIX/fix_nco_gfsv16"
+if [[ $MACHINE = "wcoss2" ]]; then
+  basedir=/lfs/h2/emc/eib/noscrub/Rahul.Mahajan/GFSForecast
+  tmpdir=/lfs/h2/emc/stmp/$USER
+  FIXDIR=/lfs/h2/emc/global/noscrub/Kate.Friedman/glopara/FIX/fix_nco_gfsv16
+  MAX_NCORES_PER_NODE=128
+elif [[ $MACHINE = "wcoss_dell_p3" ]]; then
+  basedir=/gpfs/dell2/emc/modeling/noscrub/Rahul.Mahajan/GFSForecast
+  tmpdir=/gpfs/dell2/stmp/$USER
+  FIXDIR=/gpfs/dell2/emc/modeling/noscrub/emc.glopara/git/fv3gfs/fix_nco_gfsv16
+  MAX_NCORES_PER_NODE=28
+fi
 
-# DATADIR contains gdas.$CDATE and gfs.$CDATE
-DATADIR=$ROOTDIR/data
+REPODIR=$basedir/ufs-tools
+MODELDIR=$basedir/ufs-weather-model
+ICDIR=$basedir/data
+DATADIR=$tmpdir/opsfcst
 
-MAX_NCORES_PER_NODE=128 # (WCOSS2: 128, WCOSS-Dell: 28)
-
-NODES=210
-NCPUS=12
-NTHREADS=8
+NODES=606
+NCPUS=4
+NTHREADS=7
 WRITE_GROUPS=8
-WRITE_TASKS_PER_GROUP=48
+WRITE_TASKS_PER_GROUP=56
 LAYOUT_X=16
 LAYOUT_Y=16
 
 # Export any variables used by the scripts
+export MACHINE
 export CDATE
 export CDUMP
-export ROOTDIR
-export DATADIR
+export REPODIR
 export MODELDIR
-export RUNDIR
+export ICDIR
+export DATADIR
 export FIXDIR
 export MAX_NCORES_PER_NODE
 export NODES
@@ -68,5 +71,11 @@ echeck() {
 export -f eparse
 export -f echeck
 
-$ROOTDIR/scripts/setup_model.sh
-$ROOTDIR/scripts/configure_run.sh
+$REPODIR/scripts/setup_model.sh
+$REPODIR/scripts/configure.sh
+
+if [[ $MACHINE = "wcoss2" ]]; then
+  qsub   $DATADIR/run.sh
+elif [[ $MACHINE = "wcoss_dell_p3" ]]; then
+  bsub < $DATADIR/run.sh
+fi

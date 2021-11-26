@@ -6,7 +6,7 @@ set -eux
 envars=()
 envars+=("CDATE")
 envars+=("CDUMP")
-envars+=("DATADIR")
+envars+=("ICDIR")
 
 # make sure required env vars exist
 echeck ${envars[@]}
@@ -16,8 +16,8 @@ echeck ${envars[@]}
 GDATE=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2} - 6 hours")
 BDATE=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2} - 3 hours")
 
-# cd into the directory w
-cd $DATADIR || exit 1
+# cd into the directory
+mkdir -p $ICDIR && cd $ICSDIR
 
 # GDAS atm restarts
 tarball="/NCEPPROD/hpssprod/runhistory/rh${GDATE:0:4}/${GDATE:0:6}/${GDATE:0:10}/com_gfs_prod_gdas.${GDATE:0:8}_${GDATE:8:2}.gdas_restart.tar"

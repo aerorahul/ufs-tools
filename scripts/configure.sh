@@ -4,8 +4,10 @@ set -eux
 
 # Required environment variables
 envars=()
-envars+=("ROOTDIR")
-envars+=("RUNDIR")
+envars+=("MACHINE")
+envars+=("REPODIR")
+envars+=("DATADIR")
+envars+=("MAX_NCORES_PER_NODE")
 envars+=("NODES")
 envars+=("NCPUS")
 envars+=("NTHREADS")
@@ -13,7 +15,6 @@ envars+=("WRITE_GROUPS")
 envars+=("WRITE_TASKS_PER_GROUP")
 envars+=("LAYOUT_X")
 envars+=("LAYOUT_Y")
-envars+=("MAX_NCORES_PER_NODE")
 
 # make sure required env vars exist
 echeck ${envars[@]}
@@ -35,28 +36,14 @@ ATM_PET_MAX=$((ATM_PET_MIN+ATM_PES-1))
 WAV_PET_MIN=$((ATM_PET_MAX+1))
 WAV_PET_MAX=$((WAV_PET_MIN+WAV_PES-1))
 
-cd $RUNDIR || exit 1
+cd $DATADIR || exit 1
 
 # Parse templated files to create final files
-eparse() { ( set -eu; set +x; eval "set -eu; cat<<_EOF"$'\n'"$(< "$1")"$'\n'"_EOF"; ) }
-eparse $ROOTDIR/parm/input.nml.tmpl       > input.nml
-eparse $ROOTDIR/parm/model_configure.tmpl > model_configure
-eparse $ROOTDIR/parm/nems.configure.tmpl  > nems.configure
+eparse $REPODIR/parm/input.nml.tmpl       > input.nml
+eparse $REPODIR/parm/model_configure.tmpl > model_configure
+eparse $REPODIR/parm/nems.configure.tmpl  > nems.configure
 
-# Load run-time modules
-set +x
-module use $( pwd -P )
-module load modules.fv3gfs
-module load cray-pals
-module list
-set -x
+# Parse machine specifiy job-card and run script
+eparse $REPODIR/run/${MACHINE}.sh.tmpl > run.sh
 
-# Set run-time environment
-export OMP_STACKSIZE=512M
-export OMP_NUM_THREADS=$NTHREADS
-export OMP_PLACES=cores
-#export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
-
-echo "Model started:  " `date`
-#mpiexec -n $NCORES -ppn $NCPUS -depth $NTHREADS ./global_fv3gfs.x
-echo "Model ended:    " `date`
+exit 0

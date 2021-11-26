@@ -6,11 +6,11 @@ set -eux
 envars=()
 envars+=("CDATE")
 envars+=("CDUMP")
-envars+=("ROOTDIR")
-envars+=("DATADIR")
-envars+=("RUNDIR")
-envars+=("FIXDIR")
+envars+=("REPODIR")
+envars+=("ICDIR")
 envars+=("MODELDIR")
+envars+=("DATADIR")
+envars+=("FIXDIR")
 
 # make sure required env vars exist
 echeck ${envars[@]}
@@ -20,8 +20,8 @@ echeck ${envars[@]}
 GDATE=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2} - 6 hours")
 BDATE=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2} - 3 hours")
 
-[[ -d $RUNDIR ]] && rm -rf $RUNDIR
-mkdir -p $RUNDIR && cd $RUNDIR
+[[ -d $DATADIR ]] && rm -rf $DATADIR
+mkdir -p $DATADIR && cd $DATADIR
 
 # Create INPUT and RESTART directories
 mkdir -p INPUT RESTART
@@ -33,7 +33,7 @@ for tt in $(seq 1 6); do
   ln -sf $FIXDIR/fix_fv3/C768/C768_oro_data.tile${tt}.nc INPUT/oro_data.tile${tt}.nc
 done
 
-# Link static atm data into RUNDIR
+# Link static atm data into DATADIR
 ln -sf $FIXDIR/fix_am/global_climaeropac_global.txt aerosol.dat
 ln -sf $FIXDIR/fix_am/fix_co2_proj/global_co2historicaldata_*.txt .
 ln -sf $FIXDIR/fix_am/global_co2historicaldata_glob.txt .
@@ -48,25 +48,25 @@ ln -sf $FIXDIR/fix_am/global_solarconstant_noaa_an.txt solarconstant_noaa_an.txt
 rename global_co2historicaldata co2historicaldata global_co2historicaldata_*.txt
 rename global_volcanic_aerosols volcanic_aerosols global_volcanic_aerosols_*.txt
 
-# Link static waves data into RUNDIR
+# Link static waves data into DATADIR
 ln -sf $FIXDIR/fix_wave_gfs/rmp_src_to_dst_conserv_00[2-3]_001.nc .
 
-# Link inline post data into RUNDIR
-ln -sf $ROOTDIR/parm/postxconfig-NT-GFS-F00-TWO.txt postxconfig-NT_FH00.txt
-ln -sf $ROOTDIR/parm/postxconfig-NT-GFS-TWO.txt     postxconfig-NT.txt
-ln -sf $ROOTDIR/parm/params_grib2_tbl_new           params_grib2_tbl_new
-ln -sf $ROOTDIR/parm/post_tag_gfs128                itag
+# Link inline post data into DATADIR
+ln -sf $REPODIR/parm/postxconfig-NT-GFS-F00-TWO.txt postxconfig-NT_FH00.txt
+ln -sf $REPODIR/parm/postxconfig-NT-GFS-TWO.txt     postxconfig-NT.txt
+ln -sf $REPODIR/parm/params_grib2_tbl_new           params_grib2_tbl_new
+ln -sf $REPODIR/parm/post_tag_gfs128                itag
 
-# Link FV3 dycore tables into RUNDIR
-ln -sf $ROOTDIR/parm/data_table        .
-ln -sf $ROOTDIR/parm/field_table       .
-eparse $ROOTDIR/parm/diag_table.tmpl > diag_table
+# Link FV3 dycore tables into DATADIR
+ln -sf $REPODIR/parm/data_table        .
+ln -sf $REPODIR/parm/field_table       .
+eparse $REPODIR/parm/diag_table.tmpl > diag_table
 
 # Link INPUT data
-ln -sf $DATADIR/gdas.${GDATE:0:8}/${GDATE:8:2}/atmos/RESTART/*      INPUT/
-ln -sf $DATADIR/${CDUMP}.${CDATE:0:8}/${CDATE:8:2}/atmos/RESTART/*  INPUT/
-ln -sf $DATADIR/${CDUMP}.${CDATE:0:8}/${CDATE:8:2}/atmos/${CDUMP}.t${CDATE:8:2}z.atmi*.nc INPUT/
-ln -sf $DATADIR/${CDUMP}.${CDATE:0:8}/${CDATE:8:2}/wave/rundata/*   .
+ln -sf $ICDIR/gdas.${GDATE:0:8}/${GDATE:8:2}/atmos/RESTART/*      INPUT/
+ln -sf $ICDIR/${CDUMP}.${CDATE:0:8}/${CDATE:8:2}/atmos/RESTART/*  INPUT/
+ln -sf $ICDIR/${CDUMP}.${CDATE:0:8}/${CDATE:8:2}/atmos/${CDUMP}.t${CDATE:8:2}z.atmi*.nc INPUT/
+ln -sf $ICDIR/${CDUMP}.${CDATE:0:8}/${CDATE:8:2}/wave/rundata/*   .
 
 # rename/move atm IC data per model requirements
 rename "${BDATE:0:8}.${BDATE:8:2}0000." "" INPUT/${BDATE:0:8}.${BDATE:8:2}0000.*
@@ -93,4 +93,4 @@ mv ww3_multi.${CDUMP}wave.t${CDATE:8:2}z.inp ww3_multi.inp
 cp $MODELDIR/tests/fv3_1.exe     ./global_fv3gfs.x
 cp $MODELDIR/tests/modules.fv3_1 ./modules.fv3gfs
 
-echo "model setup in: $RUNDIR"
+echo "model setup in: $DATADIR"

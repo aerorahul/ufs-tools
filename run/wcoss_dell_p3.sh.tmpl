@@ -1,0 +1,40 @@
+#!/bin/bash
+
+#BSUB -oo out
+#BSUB -eo err
+#BSUB -J gfs_forecast
+#BSUB -W 02:00
+#BSUB -q dev
+#BSUB -P GFS-DEV
+#BSUB -n $NCORES
+#BSUB -R span[ptile=$NCPUS]
+#BSUB -R affinity[core($NTHREADS)]
+
+set -eux
+
+DATADIR=$DATADIR
+NODES=$NODES
+NCPUS=$NCPUS
+NTHREADS=$NTHREADS
+
+### D O  N O T  E D I T  B E L O W ###
+
+cd $DATADIR || exit 1
+
+# Load run-time modules
+set +x
+module use $( pwd -P )
+module load modules.fv3gfs
+module list
+set -x
+
+# Set run-time environment
+export OMP_STACKSIZE=512M
+export OMP_NUM_THREADS=$NTHREADS
+export I_MPI_DEBUG=4
+
+NCORES=$((NODES*NCPUS))
+
+echo "Model started: \$(date)"
+mpirun -l -n $NCORES ./global_fv3gfs.x
+echo "Model ended:   \$(date)"
