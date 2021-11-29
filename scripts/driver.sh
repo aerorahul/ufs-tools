@@ -71,7 +71,7 @@ echeck() {
 export -f eparse
 export -f echeck
 
-$REPODIR/scripts/setup_model.sh
+$REPODIR/scripts/setup.sh
 $REPODIR/scripts/configure.sh
 
 if [[ $MACHINE = "wcoss2" ]]; then
