@@ -71,9 +71,9 @@ ln -sf $ICDIR/${CDUMP}.${CDATE:0:8}/${CDATE:8:2}/wave/rundata/*   .
 # rename/move atm IC data per model requirements
 rename "${BDATE:0:8}.${BDATE:8:2}0000." "" INPUT/${BDATE:0:8}.${BDATE:8:2}0000.*
 rename sfcanl_data sfc_data INPUT/*sfcanl_data*
-mv INPUT/${CDUMP}.t${CDATE:8:2}z.atmi003.nc INPUT/fv3_increment3.nc
-mv INPUT/${CDUMP}.t${CDATE:8:2}z.atminc.nc  INPUT/fv3_increment6.nc
-mv INPUT/${CDUMP}.t${CDATE:8:2}z.atmi009.nc INPUT/fv3_increment9.nc
+mv INPUT/${CDUMP}.t${CDATE:8:2}z.atmi003.nc INPUT/fv_increment3.nc
+mv INPUT/${CDUMP}.t${CDATE:8:2}z.atminc.nc  INPUT/fv_increment6.nc
+mv INPUT/${CDUMP}.t${CDATE:8:2}z.atmi009.nc INPUT/fv_increment9.nc
 
 # INPUT/coupler.res needs to be replaced with correct start time
 rm -f INPUT/coupler.res
