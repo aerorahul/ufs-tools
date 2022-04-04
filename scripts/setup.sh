@@ -23,8 +23,8 @@ BDATE=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2} - 3 hours")
 [[ -d $DATADIR ]] && rm -rf $DATADIR
 mkdir -p $DATADIR && cd $DATADIR
 
-# Create INPUT and RESTART directories
-mkdir -p INPUT RESTART
+# Create directories for the run
+mkdir -p INPUT RESTART restart_wave
 
 # Link static FV3 data into INPUT
 ln -sf $FIXDIR/fix_fv3/C768/C768_mosaic.nc INPUT/grid_spec.nc

@@ -17,10 +17,10 @@ GDATE=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2} - 6 hours")
 BDATE=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2} - 3 hours")
 
 # cd into the directory
-mkdir -p $ICDIR && cd $ICSDIR
+mkdir -p $ICDIR && cd $ICDIR
 
 # GDAS atm restarts
-tarball="/NCEPPROD/hpssprod/runhistory/rh${GDATE:0:4}/${GDATE:0:6}/${GDATE:0:10}/com_gfs_prod_gdas.${GDATE:0:8}_${GDATE:8:2}.gdas_restart.tar"
+tarball="/NCEPPROD/hpssprod/runhistory/rh${GDATE:0:4}/${GDATE:0:6}/${GDATE:0:8}/com_gfs_prod_gdas.${GDATE:0:8}_${GDATE:8:2}.gdas_restart.tar"
 rm -f gdas_filelist.txt
 cat >> gdas_filelist.txt << _EOF
 ./gdas.${GDATE:0:8}/${GDATE:8:2}/atmos/RESTART/${BDATE:0:8}.${BDATE:8:2}0000.fv_core.res.nc
@@ -52,7 +52,7 @@ _EOF
 htar -xvf $tarball -T 4 -L gdas_filelist.txt
 
 # atm increments and surface analysis
-tarball="/NCEPPROD/hpssprod/runhistory/rh${CDATE:0:4}/${CDATE:0:6}/${CDATE:0:10}/com_gfs_prod_${CDUMP}.${CDATE:0:8}_${CDATE:8:2}.${CDUMP}_restart.tar"
+tarball="/NCEPPROD/hpssprod/runhistory/rh${CDATE:0:4}/${CDATE:0:6}/${CDATE:0:8}/com_gfs_prod_${CDUMP}.${CDATE:0:8}_${CDATE:8:2}.${CDUMP}_restart.tar"
 rm -f sfc_filelist.txt
 cat >> sfc_filelist.txt << _EOF
 ./${CDUMP}.${CDATE:0:8}/${CDATE:8:2}/atmos/${CDUMP}.t${CDATE:8:2}z.atmi003.nc
@@ -68,7 +68,7 @@ _EOF
 htar -xvf $tarball -T 4 -L sfc_filelist.txt
 
 # WW3 ICs
-tarball="/NCEPPROD/hpssprod/runhistory/rh${CDATE:0:4}/${CDATE:0:6}/${CDATE:0:10}/com_gfs_prod_${CDUMP}.${CDATE:0:8}_${CDATE:8:2}.${CDUMP}wave_raw.tar"
+tarball="/NCEPPROD/hpssprod/runhistory/rh${CDATE:0:4}/${CDATE:0:6}/${CDATE:0:8}/com_gfs_prod_${CDUMP}.${CDATE:0:8}_${CDATE:8:2}.${CDUMP}wave_raw.tar"
 rm -f  ${CDUMP}wave_filelist.txt
 cat >> ${CDUMP}wave_filelist.txt << _EOF
 ./${CDUMP}.${CDATE:0:8}/${CDATE:8:2}/wave/rundata/${CDUMP}wave.glix_10m.t${CDATE:8:2}z.cur

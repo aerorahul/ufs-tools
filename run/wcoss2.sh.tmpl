@@ -1,11 +1,10 @@
 #!/bin/bash
-#PBS -o out
-#PBS -e err
+#PBS -j oe
 #PBS -N gfs_forecast
 #PBS -A GFS-DEV
-#PBS -q dev
+#PBS -q debug
 #PBS -l place=vscatter,select=$NODES:ncpus=$NCPUS:mpiprocs=$NCPUS
-#PBS -l walltime=03:00:00
+#PBS -l walltime=00:30:00
 
 set -eux
 
@@ -16,11 +15,11 @@ NTHREADS=$NTHREADS
 
 ### D O  N O T  E D I T  B E L O W ###
 
-cd $DATADIR || exit 1
+cd \$DATADIR || exit 1
 
 # Load run-time modules
 set +x
-module use $( pwd -P )
+module use \$DATADIR
 module load modules.fv3gfs
 module load cray-pals
 module list
@@ -28,12 +27,12 @@ set -x
 
 # Set run-time environment
 export OMP_STACKSIZE=512M
-export OMP_NUM_THREADS=$NTHREADS
+export OMP_NUM_THREADS=\$NTHREADS
 export OMP_PLACES=cores
 export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 
-NCORES=$((NODES*NCPUS))
+NCORES=\$((NODES*NCPUS))
 
 echo "Model started: \$(date)"
-mpiexec -n $NCORES -ppn $NCPUS -depth $NTHREADS ./global_fv3gfs.x
+mpiexec -n $NCORES -ppn \$NCPUS -depth \$NTHREADS ./global_fv3gfs.x
 echo "Model ended:   \$(date)"

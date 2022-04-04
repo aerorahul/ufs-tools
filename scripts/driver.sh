@@ -6,7 +6,7 @@ CDATE=2021110918
 CDUMP=gfs
 
 MACHINE="wcoss_dell_p3"
-#MACHINE="wcoss2"
+MACHINE="wcoss2"
 
 if [[ $MACHINE = "wcoss2" ]]; then
   basedir=/lfs/h2/emc/eib/noscrub/Rahul.Mahajan/GFSForecast
@@ -25,11 +25,11 @@ MODELDIR=$basedir/ufs-weather-model
 ICDIR=$basedir/data
 DATADIR=$tmpdir/opsfcst
 
-NODES=606
-NCPUS=4
-NTHREADS=7
+NODES=160
+NCPUS=16
+NTHREADS=8
 WRITE_GROUPS=8
-WRITE_TASKS_PER_GROUP=56
+WRITE_TASKS_PER_GROUP=64
 LAYOUT_X=16
 LAYOUT_Y=16
 
