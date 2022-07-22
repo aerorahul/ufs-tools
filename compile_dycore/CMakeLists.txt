@@ -28,8 +28,8 @@ endif()
 option(OPENMP "Enable OpenMP threading" OFF)
 
 ExternalProject_Add(fms
-  GIT_REPOSITORY "https://github.com/noaa-emc/fms"
-  GIT_TAG        "feature/2020.04.03-private"
+  GIT_REPOSITORY "https://github.com/noaa-gfdl/fms"
+  GIT_TAG        "2022.01"
   PREFIX         "${CMAKE_BINARY_DIR}/fms"
   CMAKE_ARGS     "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/fms"
                  "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
@@ -39,12 +39,28 @@ ExternalProject_Add(fms
   )
 
 ExternalProject_Add(fv3
-  GIT_REPOSITORY "https://github.com/noaa-emc/gfdl_atmos_cubed_sphere"
-  GIT_TAG        "feature/cmake_in_dycore_of_emc"
+  GIT_REPOSITORY "https://github.com/aerorahul/gfdl_atmos_cubed_sphere"
+  GIT_TAG        "origin/bugfix/fms_kind"
+  GIT_PROGRESS   "ON"
   PREFIX         "${CMAKE_BINARY_DIR}/fv3"
   CMAKE_ARGS     "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/fv3"
                  "-DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}"
                  "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
                  "-DOPENMP=${OPENMP}"
+                 "-DGFS_PHYS=ON"
+                 "-DGFS_TYPES=ON"
+                 "-DUSE_GFSL63=ON"
   DEPENDS        fms
+  )
+
+ExternalProject_Add(driver
+  GIT_REPOSITORY "https://github.com/aerorahul/atmos_drivers"
+  GIT_TAG        "origin/feature/ufs-fv3-solo-driver"
+  PREFIX         "${CMAKE_BINARY_DIR}/driver"
+  CMAKE_ARGS     "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/driver"
+                 "-DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}"
+                 "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
+                 "-DOPENMP=${OPENMP}"
+                 "-DFV3_MODE=SOLO"
+  DEPENDS        fms fv3
   )
